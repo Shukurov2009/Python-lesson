@@ -1,0 +1,1559 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python daftari</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Onest:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Maket: katakli daftar fonida, tepada sticky sarlavha, ustida 30 katakli progress, pastda hafta bo'yicha dars jadvali. Kun sahifasi: maqsad, nazariya, kod, vazifalar. */
+:root {
+  --bg: #F1F5F2;
+  --surface: #FFFFFF;
+  --ink: #16201B;
+  --ink-2: #4B5A52;
+  --line: #D3DCD6;
+  --grid: #E4EAE6;
+  --accent: #2557C9;
+  --accent-ink: #FFFFFF;
+  --mark-bg: #FFEC8F;
+  --ok: #1B8A55;
+  --ok-bg: #DDF2E6;
+  --on-ok: #FFFFFF;
+  --code-bg: #14201A;
+  --code-fg: #E3EDE7;
+  --code-bar: #1E2D26;
+  --code-dim: #8EA396;
+  --tok-kw: #FF8FA3;
+  --tok-str: #A8E08A;
+  --tok-num: #FFD166;
+  --tok-fn: #7FC4FF;
+  --tok-com: #7F9488;
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-body: 'Onest', 'Segoe UI', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1613; --surface: #17211C; --ink: #E7EEE9; --ink-2: #A3B2A9; --line: #2B3A32; --grid: #19241F;
+    --accent: #8CB0FF; --accent-ink: #0B1530; --mark-bg: #4D4310; --ok: #4CC58A; --ok-bg: #16382A; --on-ok: #06190F;
+    --code-bg: #0A110E; --code-fg: #DCE7E0; --code-bar: #15201B; --code-dim: #7F9488;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1613; --surface: #17211C; --ink: #E7EEE9; --ink-2: #A3B2A9; --line: #2B3A32; --grid: #19241F;
+  --accent: #8CB0FF; --accent-ink: #0B1530; --mark-bg: #4D4310; --ok: #4CC58A; --ok-bg: #16382A; --on-ok: #06190F;
+  --code-bg: #0A110E; --code-fg: #DCE7E0; --code-bar: #15201B; --code-dim: #7F9488;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  background-color: var(--bg);
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-block: 0 56px;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.wrap {
+  max-width: 720px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3, h4, p, ul { margin: 0; }
+
+/* sarlavha */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--bg); border-bottom: 1px solid var(--line); }
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; }
+.brand { background: none; border: 0; padding: 8px 0; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em; display: flex; align-items: center; gap: 4px; }
+.brand .mk { background: var(--mark-bg); padding: 0 6px; border-radius: 3px; }
+.pill { font-family: var(--font-mono); font-size: 0.8rem; border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 12px; font-variant-numeric: tabular-nums; }
+
+main { padding-top: 24px; }
+
+/* bosh sahifa */
+.hero h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.3rem, 10vw, 3.6rem); line-height: 1; letter-spacing: -0.03em; text-wrap: balance; }
+.hero h1 .mk { background: linear-gradient(transparent 58%, var(--mark-bg) 58% 92%, transparent 92%); padding: 0 2px; }
+.hero .lead { margin-top: 14px; color: var(--ink-2); max-width: 52ch; }
+
+.board { margin-top: 22px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 16px; display: grid; gap: 16px; }
+.board-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.count { font-family: var(--font-display); font-weight: 800; font-size: 3rem; line-height: 0.9; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.count small { font-size: 1.1rem; font-weight: 600; color: var(--ink-2); letter-spacing: 0; margin-left: 6px; }
+.pct { font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-2); }
+.cells { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }
+.cell { aspect-ratio: 1; max-width: 100%; border: 1.5px solid var(--line); border-radius: 4px; background: var(--surface); font-family: var(--font-mono); font-size: 0.7rem; padding: 0; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.cell.done { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.cell.next { border-color: var(--accent); color: var(--ink); border-width: 2px; }
+.cell.today { box-shadow: 0 0 0 2px var(--mark-bg); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.78rem; color: var(--ink-2); }
+.legend i { display: inline-block; width: 11px; height: 11px; border-radius: 3px; border: 1.5px solid var(--line); vertical-align: -1px; margin-right: 6px; background: var(--surface); }
+.legend i.d { background: var(--accent); border-color: var(--accent); }
+.legend i.n { border-color: var(--accent); border-width: 2px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+.btn { border: 0; border-radius: 10px; padding: 12px 18px; font-weight: 600; background: var(--accent); color: var(--accent-ink); min-height: 46px; }
+.btn.ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn.small { min-height: 38px; padding: 8px 14px; font-size: 0.9rem; }
+.finished { font-weight: 600; }
+.datebox { display: grid; gap: 4px; font-size: 0.85rem; color: var(--ink-2); }
+.datebox input { font: inherit; font-family: var(--font-mono); color: var(--ink); background: var(--bg); border: 1.5px solid var(--line); border-radius: 8px; padding: 8px 10px; min-height: 42px; }
+
+.sched-title { margin-top: 36px; font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; letter-spacing: -0.02em; }
+.sched-note { color: var(--ink-2); font-size: 0.92rem; margin-top: 4px; }
+.week { margin-top: 26px; }
+.week-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+.week-name { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; text-wrap: balance; min-width: 0; }
+.week-meta { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 2px; }
+.week-count { font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rows { list-style: none; padding: 0; display: grid; gap: 8px; }
+.row { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.row.done { background: var(--ok-bg); border-color: transparent; }
+.tick { width: 52px; height: 56px; background: none; border: 0; display: grid; place-items: center; padding: 0; }
+.tick .box { width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--ink-2); display: grid; place-items: center; color: transparent; transition: background 0.15s, border-color 0.15s; }
+.tick[aria-pressed="true"] .box { background: var(--ok); border-color: var(--ok); color: var(--on-ok); }
+.open { background: none; border: 0; text-align: left; padding: 12px 14px 12px 0; display: grid; gap: 2px; min-width: 0; }
+.when { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-2); letter-spacing: 0.02em; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.today-badge { background: var(--mark-bg); color: var(--ink); border-radius: 999px; padding: 0 8px; font-weight: 500; }
+.ttl { font-weight: 600; line-height: 1.3; text-wrap: balance; }
+.sub { font-size: 0.8rem; color: var(--ink-2); }
+
+/* kun sahifasi */
+.bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 18px; }
+.back { background: none; border: 0; padding: 8px 4px; display: inline-flex; align-items: center; gap: 6px; font-weight: 600; min-height: 42px; }
+.pn { display: flex; gap: 6px; }
+.sq { width: 42px; height: 42px; border-radius: 10px; border: 1.5px solid var(--line); background: var(--surface); display: grid; place-items: center; padding: 0; }
+.sq:disabled { opacity: 0.35; cursor: default; }
+.eyebrow { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-2); }
+.day-title { margin-top: 8px; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.7rem, 7vw, 2.5rem); line-height: 1.08; letter-spacing: -0.025em; text-wrap: balance; }
+.chips { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font-size: 0.82rem; border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; padding: 3px 12px; }
+.chip.ok { background: var(--ok-bg); border-color: transparent; color: var(--ink); font-weight: 600; }
+.goal { margin-top: 20px; background: var(--mark-bg); border-radius: 10px; padding: 14px 16px; }
+.goal b { display: block; font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 2px; }
+.sec { margin-top: 34px; }
+.sec-h { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); font-weight: 500; margin-bottom: 14px; }
+.sec-h::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.sec-h .cnt { order: 3; font-variant-numeric: tabular-nums; }
+.concept + .concept { margin-top: 18px; }
+.concept h4 { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; letter-spacing: -0.01em; margin-bottom: 4px; }
+.concept p { max-width: 65ch; }
+code.i { font-family: var(--font-mono); font-size: 0.88em; background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; }
+.code { background: var(--code-bg); color: var(--code-fg); border-radius: 12px; overflow: hidden; margin: 0; }
+.code-bar { display: flex; justify-content: space-between; align-items: center; background: var(--code-bar); padding: 6px 8px 6px 14px; font-family: var(--font-mono); font-size: 0.74rem; color: var(--code-dim); letter-spacing: 0.06em; text-transform: uppercase; }
+.copy { background: none; border: 1.5px solid var(--code-dim); color: var(--code-fg); border-radius: 8px; padding: 5px 12px; font-size: 0.8rem; min-height: 34px; }
+.code pre { margin: 0; padding: 14px 16px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.65; tab-size: 4; }
+.t-k { color: var(--tok-kw); } .t-s { color: var(--tok-str); } .t-n { color: var(--tok-num); } .t-f { color: var(--tok-fn); } .t-c { color: var(--tok-com); font-style: italic; }
+.tasks { list-style: none; padding: 0; display: grid; gap: 8px; }
+.task { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; cursor: pointer; }
+.task input { appearance: none; -webkit-appearance: none; margin: 1px 0 0; width: 24px; height: 24px; border: 2px solid var(--ink-2); border-radius: 6px; background: var(--surface); display: grid; place-items: center; cursor: pointer; }
+.task input:checked { background: var(--accent); border-color: var(--accent); }
+.task input:checked::after { content: ""; width: 6px; height: 11px; border: solid var(--accent-ink); border-width: 0 2.5px 2.5px 0; transform: translateY(-1px) rotate(45deg); }
+.task.on span { color: var(--ink-2); text-decoration: line-through; text-decoration-thickness: 1px; }
+.finish { margin-top: 38px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 18px; display: grid; gap: 12px; }
+.finish.done { background: var(--ok-bg); border-color: transparent; }
+.finish p { color: var(--ink-2); }
+.finish .btn { width: 100%; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.finish.done .btn { background: transparent; color: var(--ink); border: 1.5px solid var(--ink-2); }
+.nav2 { margin-top: 16px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+
+/* pastki qism */
+.foot { margin-top: 44px; padding-top: 18px; border-top: 1px solid var(--line); display: grid; gap: 14px; font-size: 0.88rem; color: var(--ink-2); }
+.foot details { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; }
+.foot summary { cursor: pointer; font-weight: 600; color: var(--ink); min-height: 28px; }
+.foot textarea { width: 100%; margin-top: 10px; font-family: var(--font-mono); font-size: 0.76rem; background: var(--bg); color: var(--ink); border: 1.5px solid var(--line); border-radius: 8px; padding: 8px; resize: vertical; }
+.foot .acts { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; align-items: center; }
+.msg { font-size: 0.85rem; }
+.reset-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+
+@media (max-width: 420px) {
+  .cells { gap: 3px; }
+  .cell { font-size: 0.64rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<style>body{margin:0}</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <button class="brand" id="brand" type="button" aria-label="Bosh sahifa"><span class="mk">Python</span><span>daftari</span></button>
+    <span class="pill" id="pill" aria-live="polite">0/30</span>
+  </div>
+</header>
+<main class="wrap" id="app"></main>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Dars mazmuni ---------- */
+  var WEEKS = [
+    { t: "Asoslar va shartlar", a: 1, b: 7 },
+    { t: "Sikllar va ma'lumotlar to'plami", a: 8, b: 14 },
+    { t: "Funksiyalar, fayllar va xatolar", a: 15, b: 21 },
+    { t: "Modullar, OOP va kutubxonalar", a: 22, b: 28 },
+    { t: "Algoritmlar va yakuniy loyiha", a: 29, b: 30 }
+  ];
+
+  var DAYS = [
+    /* 1 */ {
+      t: "Python bilan tanishuv va birinchi dastur", v: 60,
+      g: "Python nima ekanini bilish, kompyuterga o'rnatish va birinchi dasturni ishga tushirish.",
+      th: [
+        ["Python nima?", "Python odam o'qishi oson bo'lgan dasturlash tili. Veb-saytlar, sun'iy intellekt, ma'lumotlar tahlili, o'yinlar va kundalik ishlarni avtomatlashtirishda ishlatiladi."],
+        ["O'rnatish", "python.org saytidan Python 3 ni yuklab oling. Windows'da o'rnatishda “Add Python to PATH” katagini belgilang. Tekshirish uchun terminalda §python --version§ yozing."],
+        ["Kod yozish joyi", "Yangi boshlovchilar uchun Thonny yoki VS Code qulay. Python fayllari §.py§ bilan tugaydi, masalan §salom.py§."],
+        ["print() funksiyasi", "§print()§ ekranga yozuv chiqaradi. Matn qo'shtirnoq ichiga yoziladi: §\"Salom\"§ yoki §'Salom'§."],
+        ["Izohlar", "§#§ belgisidan keyingi qism Python tomonidan o'qilmaydi. Izoh kodni tushuntirish uchun yoziladi."]
+      ],
+      c: String.raw`# Mening birinchi dasturim
+print("Salom, dunyo!")
+print("Men Python o'rganyapman")
+print(2026)`,
+      p: [
+        "Python'ni o'rnating va terminalda §python --version§ natijasini ko'ring.",
+        "§salom.py§ faylini yarating va ichiga “Salom, dunyo!” chiqaruvchi kod yozing.",
+        "Ismingiz, yoshingiz va shahringizni 3 ta alohida §print§ bilan chiqaring."
+      ],
+      w: [
+        "O'zingiz haqingizda 5 qatorli kichik vizitka chiqaring.",
+        "Bir qator boshiga §#§ qo'yib ishga tushiring va nima o'zgarganini daftaringizga yozing.",
+        "§print(\"Salom\"§ deb qavsni yopmasdan ishga tushiring va chiqqan xatoni o'qib ko'ring."
+      ]
+    },
+    /* 2 */ {
+      t: "O'zgaruvchilar va ma'lumot turlari", v: 60,
+      g: "Ma'lumotni nom bilan saqlashni va asosiy turlarni (int, float, str, bool) ajrata olishni o'rganish.",
+      th: [
+        ["O'zgaruvchi", "O'zgaruvchi ma'lumot saqlanadigan nomli quti. §yosh = 20§ yozsangiz, “yosh” qutisiga 20 solinadi."],
+        ["Nom berish qoidalari", "Nom harf yoki §_§ bilan boshlanadi, raqam bilan boshlanmaydi. Katta va kichik harf farq qiladi: §Ali§ va §ali§ boshqa-boshqa. Odatda §kichik_harf_va_pastki_chiziq§ yoziladi."],
+        ["Asosiy turlar", "§int§ butun son, §float§ kasr son, §str§ matn, §bool§ esa §True§ yoki §False§ qiymati."],
+        ["type() funksiyasi", "§type(x)§ qiymat qaysi turda ekanini ko'rsatadi."]
+      ],
+      c: String.raw`ism = "Ali"
+yosh = 20
+bo_y = 1.75
+talaba_mi = True
+
+print(ism, yosh, bo_y, talaba_mi)
+print(type(ism))
+print(type(yosh))
+print(type(bo_y))
+print(type(talaba_mi))
+
+yosh = yosh + 1
+print("Yangi yosh:", yosh)`,
+      p: [
+        "4 xil turdagi o'zgaruvchi yarating va §type§ bilan turini tekshiring.",
+        "§a = 5§ va §b = 10§ ni almashtiring (a ga 10, b ga 5 tushsin). Maslahat: §a, b = b, a§.",
+        "Nima uchun §1ism = \"Ali\"§ xato berishini o'zingizcha tushuntiring."
+      ],
+      w: [
+        "O'zingiz haqingizda o'zgaruvchilar yarating (ism, yosh, bo'y, o'quvchi_mi) va chiqaring.",
+        "Tovar nomi, narxi va sonini o'zgaruvchilarga yozib, jami narxni hisoblang.",
+        "Qaysi nomlar to'g'ri: §my_name§, §2nd§, §_x§, §my-name§, §Name§? Daftaringizga yozing."
+      ]
+    },
+    /* 3 */ {
+      t: "Arifmetika va input", v: 60,
+      g: "Hisob-kitob amallarini bajarish va foydalanuvchidan ma'lumot olishni o'rganish.",
+      th: [
+        ["Amallar", "§+§ qo'shish, §-§ ayirish, §*§ ko'paytirish, §/§ bo'lish, §//§ butun bo'lish, §%§ qoldiq, §**§ daraja."],
+        ["Ustuvorlik", "Avval qavs, keyin daraja, keyin ko'paytirish/bo'lish, oxirida qo'shish/ayirish bajariladi. Shubha bo'lsa qavs ishlating."],
+        ["input()", "§input()§ foydalanuvchi yozganini oladi. U doim matn (§str§) qaytaradi, shuning uchun son kerak bo'lsa §int()§ yoki §float()§ bilan aylantiring."],
+        ["round()", "§round(3.14159, 2)§ sonni 2 xona aniqlikda yaxlitlaydi."]
+      ],
+      c: String.raw`a = 17
+b = 5
+print(a + b)   # 22
+print(a - b)   # 12
+print(a * b)   # 85
+print(a / b)   # 3.4
+print(a // b)  # 3  (butun bo'lish)
+print(a % b)   # 2  (qoldiq)
+print(a ** 2)  # 289 (daraja)
+
+son = int(input("Son kiriting: "))
+print("Kvadrati:", son ** 2)`,
+      p: [
+        "Ikki son kiritib, yig'indi, ayirma, ko'paytma va bo'linmani chiqaring.",
+        "Sekundlar sonini (masalan 3725) soat, daqiqa va sekundga ajrating. Javob: 1 soat 2 daqiqa 5 sekund.",
+        "Doira radiusini kiritib, yuzini hisoblang (pi = 3.14)."
+      ],
+      w: [
+        "Selsiyni Farengeytga o'giring: §F = C * 9 / 5 + 32§.",
+        "Narx va chegirma foizini kiritib, to'lanadigan summani chiqaring.",
+        "Ikki xonali sonning raqamlari yig'indisini §//§ va §%§ yordamida toping."
+      ]
+    },
+    /* 4 */ {
+      t: "Satrlar (string)", v: 60,
+      g: "Matn bilan ishlash: indeks, kesish, birlashtirish va uzunlik.",
+      th: [
+        ["Satr yaratish", "Matn §'...'§ yoki §\"...\"§ ichida yoziladi. Ko'p qatorli matn uchun §\"\"\"...\"\"\"§ ishlatiladi."],
+        ["Indeks", "Harflar 0 dan boshlab raqamlanadi. §soz[0]§ birinchi harf, §soz[-1]§ oxirgi harf."],
+        ["Kesish (slice)", "§soz[a:b]§ a dan b gacha (b kirmaydi) qismni oladi. §soz[::-1]§ matnni teskari qiladi."],
+        ["Amallar", "§+§ matnlarni ulaydi, §*§ takrorlaydi, §len()§ uzunlikni beradi."]
+      ],
+      c: String.raw`soz = "Python"
+print(soz[0])      # P
+print(soz[-1])     # n
+print(soz[0:3])    # Pyt
+print(soz[2:])     # thon
+print(len(soz))    # 6
+print(soz + " 3")  # Python 3
+print("ha" * 3)    # hahaha`,
+      p: [
+        "“Toshkent” so'zining birinchi, oxirgi va o'rtadagi harfini chiqaring.",
+        "So'zni teskari yozing (§[::-1]§).",
+        "Ism va familiyani kiritib, “Familiya Ism” ko'rinishida chiqaring."
+      ],
+      w: [
+        "Kiritilgan so'zning uzunligini va birinchi 3 harfini chiqaring.",
+        "§\"-\"§ belgisini 30 marta takrorlab chiziq chizing.",
+        "So'zni va uning teskarisini yonma-yon chiqaring. Ular teng bo'ladigan so'zlarni (masalan “ada”) topishga urinib ko'ring."
+      ]
+    },
+    /* 5 */ {
+      t: "Satr metodlari va f-string", v: 60,
+      g: "Matnni o'zgartiruvchi tayyor metodlarni va f-string bilan chiroyli chiqarishni bilish.",
+      th: [
+        ["Metodlar", "§upper()§ katta harf, §lower()§ kichik harf, §title()§ har so'z bosh harfi, §strip()§ chetdagi bo'shliqni olib tashlaydi, §replace(a, b)§ almashtiradi."],
+        ["split va join", "§split(\",\")§ matnni bo'laklarga ajratib ro'yxat qiladi. §\"-\".join(royxat)§ ro'yxatni matnga birlashtiradi."],
+        ["Qidirish", "§find()§ joylashgan o'rnini, §count()§ necha marta uchrashini, §startswith()§ va §endswith()§ boshlanishi va tugashini tekshiradi."],
+        ["f-string", "Matn oldiga §f§ qo'ysangiz, ichiga §{o'zgaruvchi}§ yozish mumkin. Bu eng qulay chiqarish usuli."]
+      ],
+      c: String.raw`matn = "  python dasturlash  "
+print(matn.strip())
+print(matn.upper())
+print(matn.title())
+print(matn.replace("python", "Python"))
+print("a,b,c".split(","))
+print("-".join(["1", "2", "3"]))
+
+ism = "Laylo"
+yosh = 19
+print(f"Mening ismim {ism}, yoshim {yosh}.")`,
+      p: [
+        "Kiritilgan gapda nechta “a” harfi borligini sanang.",
+        "Gapni so'zlarga ajrating va so'zlar sonini chiqaring.",
+        "f-string bilan ism, yosh va shahar haqida chiroyli jumla chiqaring."
+      ],
+      w: [
+        "Kiritilgan matndagi bo'shliqlarni §_§ ga almashtiring.",
+        "Elektron pochta manzili kiriting va §@§ dan oldingi qismini (login) ajratib oling.",
+        "Matn savol belgisi bilan tugayaptimi (§endswith§) tekshirib, natijani chiqaring."
+      ]
+    },
+    /* 6 */ {
+      t: "Shart operatorlari: if, elif, else", v: 70,
+      g: "Dasturga qaror qabul qilishni o'rgatish.",
+      th: [
+        ["Taqqoslash", "§==§ teng, §!=§ teng emas, §>§ katta, §<§ kichik, §>=§ katta yoki teng, §<=§ kichik yoki teng. Natija §True§ yoki §False§ bo'ladi."],
+        ["if sintaksisi", "Shartdan keyin ikki nuqta §:§ qo'yiladi, ichidagi kod 4 bo'shliq bilan suriladi (indent). Python'da surilish juda muhim."],
+        ["elif va else", "§elif§ qo'shimcha shart, §else§ esa hech biri to'g'ri kelmaganda ishlaydi. Tepadan pastga tekshiriladi va birinchi to'g'ri kelganda to'xtaydi."],
+        ["Ichma-ich shart", "§if§ ichida yana §if§ yozish mumkin, lekin odatda oddiyroq yozgan ma'qul."]
+      ],
+      c: String.raw`baho = int(input("Bahoni kiriting (0-100): "))
+
+if baho >= 90:
+    print("A'lo")
+elif baho >= 70:
+    print("Yaxshi")
+elif baho >= 50:
+    print("Qoniqarli")
+else:
+    print("Qoniqarsiz")`,
+      p: [
+        "Son juftmi yoki toqmi, aniqlang.",
+        "Yosh kiritilsa: 18 va undan kattalarga “Kira olasiz”, boshqalarga “Kira olmaysiz” chiqaring.",
+        "Ikki sondan kattasini toping."
+      ],
+      w: [
+        "Son musbat, manfiy yoki nolmi?",
+        "Uchta son kiritib, eng kattasini toping.",
+        "Parol §python123§ bilan mos kelsa “Xush kelibsiz”, bo'lmasa “Parol xato” chiqaring."
+      ]
+    },
+    /* 7 */ {
+      t: "1-hafta takrori: kalkulyator", v: 90,
+      g: "Birinchi haftada o'rganganlarni mustahkamlash va birinchi mini loyihani yozish.",
+      th: [
+        ["Takrorlash ro'yxati", "O'zgaruvchilar, turlar, §input§, arifmetika, satrlar, f-string va §if/elif/else§. Qaysi biri qiyin bo'lgan bo'lsa, shu kunda qayta ko'rib chiqing."],
+        ["Loyihani bo'laklarga bo'ling", "Katta ishni kichik qadamlarga ajrating: 1) ma'lumot kiritish, 2) amalni tanlash, 3) hisoblash, 4) natijani chiqarish."],
+        ["Nolga bo'lish", "Nolga bo'lib bo'lmaydi. Shuning uchun bo'lishdan oldin bo'luvchi 0 emasligini tekshiring."]
+      ],
+      c: String.raw`a = float(input("Birinchi son: "))
+amal = input("Amal (+, -, *, /): ")
+b = float(input("Ikkinchi son: "))
+
+if amal == "+":
+    print(a + b)
+elif amal == "-":
+    print(a - b)
+elif amal == "*":
+    print(a * b)
+elif amal == "/":
+    if b == 0:
+        print("Nolga bo'lib bo'lmaydi")
+    else:
+        print(a / b)
+else:
+    print("Noma'lum amal")`,
+      p: [
+        "Kalkulyatorni ko'chirmasdan, o'zingiz yozib ishlatib ko'ring.",
+        "§//§, §%§ va §**§ amallarini ham qo'shing.",
+        "Natijani f-string bilan “5.0 + 3.0 = 8.0” ko'rinishida chiqaring."
+      ],
+      w: [
+        "1-haftada qiyin bo'lgan 3 ta mavzuni yozib chiqing va ularni qayta o'qing.",
+        "Bilet narxi hisoblagichi: yosh kiritiladi. 7 gacha bepul, 7 dan 18 gacha yarim narx, qolganlar to'liq narx to'laydi.",
+        "Kalkulyatorga darajaga ko'tarish amalini qo'shing."
+      ]
+    },
+    /* 8 */ {
+      t: "Mantiqiy operatorlar", v: 60,
+      g: "Bir nechta shartni birlashtirish va qiymat borligini tekshirish.",
+      th: [
+        ["and, or, not", "§and§: ikkala shart to'g'ri bo'lsa True. §or§: kamida bittasi to'g'ri bo'lsa True. §not§: natijani teskari qiladi."],
+        ["Ustuvorlik", "Avval §not§, keyin §and§, keyin §or§ bajariladi. Chalkashmaslik uchun qavs ishlating."],
+        ["in va not in", "§\"a\" in soz§ harf so'z ichida bor-yo'qligini, §x in royxat§ element ro'yxatda borligini tekshiradi."],
+        ["Zanjirli taqqoslash", "§1 < x < 10§ deb yozish mumkin. Bu §x > 1 and x < 10§ bilan bir xil."]
+      ],
+      c: String.raw`yosh = 25
+ish_bor = True
+
+print(yosh > 18 and ish_bor)   # True
+print(yosh < 18 or ish_bor)    # True
+print(not ish_bor)             # False
+print(18 <= yosh <= 30)        # True
+print("a" in "Python")         # False
+print("y" in "Python")         # True`,
+      p: [
+        "Son 1 dan 100 gacha oraliqda ekanini tekshiring.",
+        "Harf unli ekanini §in§ yordamida aniqlang (a, e, i, o, u).",
+        "Yil kabisa yilimi? (4 ga bo'linadi va 100 ga bo'linmaydi, yoki 400 ga bo'linadi.)"
+      ],
+      w: [
+        "Login va parol tekshiruvi: ikkalasi to'g'ri bo'lsagina kirish.",
+        "a, b, c tomonlar uchburchak hosil qiladimi? Har bir ikki tomon yig'indisi uchinchisidan katta bo'lishi kerak.",
+        "Hafta kuni raqami (1 dan 7 gacha) kiritilsa, dam olish kuni (6, 7) yoki ish kunini chiqaring."
+      ]
+    },
+    /* 9 */ {
+      t: "while sikli", v: 60,
+      g: "Biror shart to'g'ri turguncha amalni takrorlashni o'rganish.",
+      th: [
+        ["while nima qiladi?", "§while shart:§ shart to'g'ri bo'lib turguncha ichidagi kodni qayta-qayta bajaradi."],
+        ["Sanagich", "Odatda siklgacha §i = 1§ yoziladi, sikl ichida §i += 1§ bilan oshiriladi. Oshirishni unutsangiz sikl hech qachon tugamaydi."],
+        ["Cheksiz sikl", "Adashib cheksiz sikl yozsangiz, terminalda §Ctrl + C§ bosib to'xtating."],
+        ["break va continue", "§break§ siklni darhol to'xtatadi, §continue§ shu qadamni tashlab keyingisiga o'tadi. §while True§ + §break§ kiritishni tekshirishda qulay."]
+      ],
+      c: String.raw`i = 1
+while i <= 5:
+    print("Qadam", i)
+    i += 1
+
+# parol to'g'ri kiritilguncha so'rash
+while True:
+    parol = input("Parol: ")
+    if parol == "1234":
+        print("Kirdingiz")
+        break
+    print("Noto'g'ri, qayta urinib ko'ring")`,
+      p: [
+        "1 dan 10 gacha sonlarni chiqaring.",
+        "10 dan 1 gacha teskari sanang.",
+        "1 dan 50 gacha juft sonlar yig'indisini hisoblang."
+      ],
+      w: [
+        "Foydalanuvchi 0 kiritmaguncha sonlarni qo'shib boring va oxirida yig'indini chiqaring.",
+        "Sonning nechta raqamdan iboratligini §while§ va §// 10§ bilan sanang.",
+        "Son topish o'yini: yashirin son 13 bo'lsin. Foydalanuvchi topguncha “katta” yoki “kichik” deb yo'naltiring."
+      ]
+    },
+    /* 10 */ {
+      t: "for sikli va range", v: 70,
+      g: "Aniq sondagi takrorlashni va ketma-ketliklar ustida yurishni o'rganish.",
+      th: [
+        ["for nima?", "§for x in ...:§ ketma-ketlikning har bir elementi uchun kodni bajaradi."],
+        ["range()", "§range(5)§ 0,1,2,3,4 beradi. §range(1, 6)§ 1 dan 5 gacha. §range(0, 10, 2)§ 2 qadam bilan: 0,2,4,6,8."],
+        ["Matn ustida for", "§for harf in \"Python\":§ so'zning har bir harfini birma-bir oladi."],
+        ["Ichma-ich sikl", "Sikl ichida sikl yozish mumkin. Jadvallar va shakllar chizishda ishlatiladi."]
+      ],
+      c: String.raw`for i in range(5):
+    print(i)           # 0 1 2 3 4
+
+for i in range(1, 11, 2):
+    print(i)           # 1 3 5 7 9
+
+for harf in "Python":
+    print(harf)
+
+# ko'paytirish jadvali
+for i in range(1, 6):
+    for j in range(1, 6):
+        print(i * j, end="\t")
+    print()`,
+      p: [
+        "1 dan 100 gacha sonlar yig'indisini toping.",
+        "Kiritilgan sonning ko'paytirish jadvalini chiqaring.",
+        "So'zdagi unli harflar sonini sanang."
+      ],
+      w: [
+        "Faktorial: §n!§ ni hisoblang (5! = 120).",
+        "Yulduzchalardan uchburchak chizing: 1, 2, 3, 4, 5 ta §*§ ketma-ket qatorlarda.",
+        "1 dan 100 gacha hamda 3 ga, hamda 5 ga bo'linadigan sonlarni chiqaring."
+      ]
+    },
+    /* 11 */ {
+      t: "Ro'yxatlar (list)", v: 70,
+      g: "Bir nechta qiymatni bitta o'zgaruvchida saqlashni o'rganish.",
+      th: [
+        ["Ro'yxat nima?", "Ro'yxat kvadrat qavsda yoziladi: §[1, 2, 3]§. Ichida turli turlar bo'lishi mumkin va tartibi saqlanadi."],
+        ["Indeks va o'zgartirish", "Elementga §royxat[0]§ bilan murojaat qilinadi. §royxat[1] = 99§ bilan qiymati almashtiriladi."],
+        ["Asosiy amallar", "§append(x)§ oxiriga qo'shadi, §len()§ uzunlik, §x in royxat§ borligini tekshiradi, §sum§, §max§, §min§ yordamchi funksiyalar."],
+        ["Ro'yxat ustida for", "§for x in royxat:§ har bir elementni birma-bir oladi."]
+      ],
+      c: String.raw`mevalar = ["olma", "anor", "uzum"]
+print(mevalar[0])
+mevalar.append("nok")
+mevalar[1] = "behi"
+print(mevalar)
+print(len(mevalar))
+print("uzum" in mevalar)
+
+for meva in mevalar:
+    print(meva)
+
+sonlar = [4, 8, 15, 16, 23, 42]
+print(sum(sonlar), max(sonlar), min(sonlar))`,
+      p: [
+        "5 ta do'stingiz ismidan ro'yxat tuzing va har biri bilan salomlashing.",
+        "Sonlar ro'yxatining yig'indisi va o'rtachasini toping.",
+        "Ro'yxatdagi eng katta sonni §max§ ishlatmasdan toping."
+      ],
+      w: [
+        "Foydalanuvchidan 5 ta son kiritib ro'yxatga yig'ing va chiqaring.",
+        "Ro'yxatdagi juft sonlarni alohida ro'yxatga ajrating.",
+        "Xarid ro'yxati: foydalanuvchi “stop” deguncha mahsulot qo'shib borsin."
+      ]
+    },
+    /* 12 */ {
+      t: "Ro'yxat metodlari va kesish", v: 70,
+      g: "Ro'yxatni tartiblash, o'zgartirish va nusxalashni bilish.",
+      th: [
+        ["Metodlar", "§insert(i, x)§ i joyga qo'shadi. §remove(x)§ qiymatni o'chiradi. §pop()§ oxirgisini olib tashlab qaytaradi. §sort()§ saralaydi. §reverse()§ teskari qiladi. §count(x)§ sanaydi. §index(x)§ o'rnini topadi."],
+        ["Kesish", "Satrlardagi kabi §royxat[a:b]§ va §royxat[::-1]§ ishlaydi."],
+        ["Nusxa olish", "§b = a§ nusxa emas, bitta ro'yxatga ikkinchi nom berish xolos. Haqiqiy nusxa uchun §a.copy()§ ishlating."],
+        ["sorted()", "§sorted(royxat)§ asl ro'yxatni o'zgartirmay, yangi saralangan ro'yxat beradi."]
+      ],
+      c: String.raw`s = [5, 2, 9, 1, 7]
+s.sort()
+print(s)               # [1, 2, 5, 7, 9]
+s.reverse()
+print(s)               # [9, 7, 5, 2, 1]
+s.insert(0, 100)
+s.remove(5)
+oxirgi = s.pop()
+print(oxirgi, s)
+
+print(s[1:3])
+print(s[::-1])
+
+a = [1, 2, 3]
+b = a.copy()           # alohida nusxa
+b.append(4)
+print(a, b)`,
+      p: [
+        "Ro'yxatni o'sish va kamayish tartibida saralang (§sort(reverse=True)§).",
+        "Ro'yxatda biror element necha marta uchrashini §count§ bilan toping.",
+        "Ro'yxatning birinchi 3 va oxirgi 3 elementini kesib chiqaring."
+      ],
+      w: [
+        "Takrorlanadigan elementlarni olib tashlab, noyob elementlardan yangi ro'yxat yarating.",
+        "Ro'yxatdagi ikkinchi eng katta sonni toping.",
+        "Ikki ro'yxatni birlashtirib, saralab chiqaring."
+      ]
+    },
+    /* 13 */ {
+      t: "Tuple va set", v: 60,
+      g: "O'zgarmas ketma-ketlik (tuple) va takrorsiz to'plam (set) bilan ishlash.",
+      th: [
+        ["Tuple", "Tuple oddiy qavsda yoziladi: §(3, 7)§. Yaratilgandan keyin o'zgartirib bo'lmaydi. Ma'lumot o'zgarmasligi kerak bo'lganda ishlatiladi."],
+        ["Ochish (unpacking)", "§x, y = (3, 7)§ yozsangiz, §x§ 3 ga, §y§ 7 ga teng bo'ladi."],
+        ["Set", "Set figurali qavsda yoziladi: §{1, 2, 3}§. Takroriy elementlar avtomatik olib tashlanadi, tartibi yo'q."],
+        ["To'plam amallari", "§a | b§ birlashma, §a & b§ kesishma, §a - b§ ayirma. Ro'yxatdagi takrorlarni olib tashlash uchun §set(royxat)§ qulay."]
+      ],
+      c: String.raw`nuqta = (3, 7)
+x, y = nuqta
+print(x, y)
+
+harflar = {"a", "b", "c", "a"}
+print(harflar)         # takrorlar yo'q
+
+a = {1, 2, 3, 4}
+b = {3, 4, 5}
+print(a | b)           # birlashma
+print(a & b)           # kesishma
+print(a - b)           # ayirma
+
+print(list(set([1, 1, 2, 2, 3])))`,
+      p: [
+        "Ikki guruh talabalari ismlaridan set yarating va ikkalasida ham borlarini toping.",
+        "Matndagi noyob harflar sonini toping.",
+        "Tuple elementini o'zgartirishga urinib, chiqqan xatoni ko'ring."
+      ],
+      w: [
+        "Ikki ro'yxatning umumiy elementlarini toping.",
+        "So'zlar ro'yxatidagi noyob so'zlar sonini chiqaring.",
+        "Tuple ichidagi eng katta va eng kichik sonni toping."
+      ]
+    },
+    /* 14 */ {
+      t: "Lug'atlar (dict)", v: 80,
+      g: "Ma'lumotni “kalit: qiymat” juftlari ko'rinishida saqlashni o'rganish.",
+      th: [
+        ["Lug'at nima?", "Lug'at figurali qavsda yoziladi: §{\"ism\": \"Ali\", \"yosh\": 20}§. Qiymat raqam bilan emas, kalit bilan olinadi."],
+        ["Olish, qo'shish, o'chirish", "§d[\"ism\"]§ qiymatni oladi. §d[\"shahar\"] = \"Toshkent\"§ yangi juft qo'shadi yoki eskisini almashtiradi. §del d[\"yosh\"]§ o'chiradi."],
+        ["get()", "§d.get(\"telefon\", \"yo'q\")§ kalit bo'lmasa xato bermaydi, berilgan standart qiymatni qaytaradi."],
+        ["Aylanish", "§d.keys()§ kalitlar, §d.values()§ qiymatlar, §d.items()§ juftlar. §for k, v in d.items():§ hammasini chiqaradi."]
+      ],
+      c: String.raw`talaba = {"ism": "Ali", "yosh": 20, "kurs": 2}
+print(talaba["ism"])
+talaba["shahar"] = "Toshkent"
+talaba["yosh"] = 21
+print(talaba.get("telefon", "yo'q"))
+
+for kalit, qiymat in talaba.items():
+    print(kalit, "->", qiymat)
+
+del talaba["kurs"]
+print(talaba)
+
+# harflarni sanash
+sanoq = {}
+for h in "salom dunyo":
+    sanoq[h] = sanoq.get(h, 0) + 1
+print(sanoq)`,
+      p: [
+        "O'zingiz haqingizda lug'at tuzing va barcha ma'lumotni chiqaring.",
+        "5 ta so'zdan iborat inglizcha-o'zbekcha lug'at yarating: so'z kiritilsa tarjimasini topsin.",
+        "Matndagi har bir so'z necha marta kelganini sanang."
+      ],
+      w: [
+        "Talabalar lug'ati (ism: baho) bo'yicha o'rtacha bahoni va eng yuqori baholi talabani toping.",
+        "Mahsulot narxlari lug'ati va savat ro'yxati bo'yicha jami narxni hisoblang.",
+        "2-haftada o'rganganlaringizni bir sahifaga qisqa konspekt qilib yozing."
+      ]
+    },
+    /* 15 */ {
+      t: "Funksiyalar asoslari", v: 70,
+      g: "Kodni nomlab, qayta-qayta ishlatish uchun funksiya yozishni o'rganish.",
+      th: [
+        ["Funksiya nima?", "Funksiya nom berilgan kod bo'lagi. §def§ bilan yaratiladi va nomi bilan chaqiriladi. Bu kodni takrorlamaslikka yordam beradi."],
+        ["Parametr va argument", "Funksiya qavsi ichidagi nomlar parametr, chaqirganda berilgan qiymatlar esa argument deyiladi."],
+        ["return", "§return§ funksiya natijasini qaytaradi va funksiyani tugatadi. §print§ faqat ekranga chiqaradi, qiymat qaytarmaydi."],
+        ["Docstring", "Funksiya birinchi qatoriga uch qo'shtirnoq bilan qisqa tavsif yozish yaxshi odat."]
+      ],
+      c: String.raw`def salom():
+    print("Salom!")
+
+def salom_ber(ism):
+    print(f"Salom, {ism}!")
+
+def qoshish(a, b):
+    return a + b
+
+salom()
+salom_ber("Dilnoza")
+natija = qoshish(3, 4)
+print(natija)`,
+      p: [
+        "Sonning kvadratini qaytaruvchi funksiya yozing.",
+        "Son juft bo'lsa §True§, aks holda §False§ qaytaruvchi funksiya yozing.",
+        "Uchta sonning o'rtachasini qaytaruvchi funksiya yozing."
+      ],
+      w: [
+        "Doira yuzini hisoblovchi funksiya yozing.",
+        "Ro'yxat elementlari yig'indisini §sum§ ishlatmasdan qaytaruvchi funksiya yozing.",
+        "Ro'yxatdagi eng katta elementni topuvchi funksiya yozing."
+      ]
+    },
+    /* 16 */ {
+      t: "Parametrlar va qaytariladigan qiymatlar", v: 70,
+      g: "Standart qiymatli parametrlar, nomli argumentlar va bir nechta qiymat qaytarishni o'rganish.",
+      th: [
+        ["Standart qiymat", "§def f(ism, til=\"uz\")§ da §til§ berilmasa §\"uz\"§ olinadi. Standart qiymatli parametrlar oxirida turadi."],
+        ["Nomli argumentlar", "§f(til=\"en\", ism=\"Ali\")§ tartib muhim emas, nomi bilan beriladi. Kod o'qilishi osonlashadi."],
+        ["Bir nechta qiymat", "§return a, b§ ikkita qiymatni tuple ko'rinishida qaytaradi. Ularni §x, y = f()§ bilan ochish mumkin."],
+        ["None", "§return§ yozilmagan funksiya §None§ (“hech narsa”) qaytaradi."]
+      ],
+      c: String.raw`def salomlash(ism, til="uz"):
+    if til == "uz":
+        return f"Salom, {ism}!"
+    return f"Hello, {ism}!"
+
+print(salomlash("Ali"))
+print(salomlash("Ali", "en"))
+print(salomlash(til="en", ism="Vali"))
+
+def min_max(sonlar):
+    return min(sonlar), max(sonlar)
+
+kichik, katta = min_max([4, 9, 1, 7])
+print(kichik, katta)`,
+      p: [
+        "§daraja(son, n=2)§ funksiyasini yozing: n berilmasa kvadratini qaytarsin.",
+        "Ro'yxatdagi juft va toq sonlar sonini ikkita qiymat qilib qaytaring.",
+        "§return§ yozilmagan funksiya natijasini chiqarib, §None§ ni ko'ring."
+      ],
+      w: [
+        "Parol kuchini tekshiruvchi funksiya yozing: uzunligi kamida 8 va ichida raqam bo'lsin.",
+        "Selsiy va Farengeyt o'giruvchi 2 ta funksiya yozing.",
+        "7-kundagi kalkulyatorni funksiyalar bilan qayta yozing."
+      ]
+    },
+    /* 17 */ {
+      t: "*args, **kwargs va lambda", v: 70,
+      g: "Istalgan sondagi argumentlarni qabul qilish va qisqa funksiyalar yozish.",
+      th: [
+        ["*args", "§def f(*sonlar)§ istalgan sondagi argumentni qabul qiladi va ularni tuple qilib beradi."],
+        ["**kwargs", "§def f(**malumot)§ nomli argumentlarni lug'at ko'rinishida qabul qiladi."],
+        ["lambda", "§lambda x: x * x§ bir qatorli nomsiz funksiya. Kichik ishlar uchun qulay."],
+        ["sorted, map, filter", "§sorted(royxat, key=len)§ uzunligi bo'yicha saralaydi. §map(f, royxat)§ har elementga f ni qo'llaydi. §filter(f, royxat)§ f True qaytarganlarini qoldiradi."]
+      ],
+      c: String.raw`def yigindi(*sonlar):
+    return sum(sonlar)
+
+print(yigindi(1, 2, 3, 4))
+
+def profil(**malumot):
+    for k, v in malumot.items():
+        print(k, ":", v)
+
+profil(ism="Ali", yosh=20)
+
+kvadrat = lambda x: x * x
+print(kvadrat(6))
+
+sozlar = ["olma", "nok", "banan"]
+print(sorted(sozlar, key=len))
+juftlar = list(filter(lambda x: x % 2 == 0, [1, 2, 3, 4, 5, 6]))
+print(juftlar)`,
+      p: [
+        "Istalgan sondagi sonlar ko'paytmasini qaytaruvchi funksiya yozing.",
+        "So'zlar ro'yxatini oxirgi harfiga ko'ra saralang.",
+        "§map§ bilan ro'yxatdagi har bir sonni 2 ga ko'paytiring."
+      ],
+      w: [
+        "Talabalar ro'yxatini (ism, baho) baho bo'yicha kamayish tartibida saralang.",
+        "§filter§ bilan ro'yxatdagi musbat sonlarni ajratib oling.",
+        "§**kwargs§ qabul qilib, ma'lumotni chiroyli chop etuvchi funksiya yozing."
+      ]
+    },
+    /* 18 */ {
+      t: "Scope va rekursiya", v: 80,
+      g: "O'zgaruvchi qayerda ko'rinishini tushunish va o'zini chaqiruvchi funksiya yozish.",
+      th: [
+        ["Lokal va global", "Funksiya ichida yaratilgan o'zgaruvchi faqat shu funksiyada ko'rinadi (lokal). Tashqarida yaratilgani global. Global o'zgaruvchilarni imkon qadar kamroq ishlating."],
+        ["Rekursiya", "Rekursiya funksiya o'zini o'zi chaqirishi. Har bir rekursiv funksiyada to'xtash sharti bo'lishi shart, aks holda cheksiz chaqiriq va §RecursionError§ chiqadi."],
+        ["Qanday o'ylash kerak", "Masalani o'zidan kichikroq shunday masalaga ajrating: §n!§ = §n * (n-1)!§. Eng kichik holat (masalan §1! = 1§) to'xtash sharti bo'ladi."]
+      ],
+      c: String.raw`x = 10
+
+def f():
+    x = 5          # lokal o'zgaruvchi
+    print(x)
+
+f()
+print(x)           # 10
+
+def faktorial(n):
+    if n <= 1:
+        return 1
+    return n * faktorial(n - 1)
+
+print(faktorial(5))   # 120
+
+def fib(n):
+    if n < 2:
+        return n
+    return fib(n - 1) + fib(n - 2)
+
+for i in range(10):
+    print(fib(i), end=" ")`,
+      p: [
+        "1 dan n gacha sonlar yig'indisini rekursiya bilan hisoblang.",
+        "Sonning raqamlari yig'indisini rekursiya bilan toping.",
+        "Matnni teskari qaytaruvchi rekursiv funksiya yozing."
+      ],
+      w: [
+        "§a ** n§ ni rekursiv usulda yozing.",
+        "So'z palindrom ekanini rekursiv usulda tekshiring.",
+        "To'xtash shartisiz rekursiv funksiya yozib, §RecursionError§ ni ko'ring. Nima uchun chiqqanini daftarga yozing."
+      ]
+    },
+    /* 19 */ {
+      t: "List comprehension", v: 60,
+      g: "Ro'yxatlarni bir qatorda chiroyli yaratishni o'rganish.",
+      th: [
+        ["Asosiy shakl", "§[ifoda for x in ketma_ketlik]§ yangi ro'yxat yaratadi. §[x * x for x in range(1, 6)]§ kvadratlar ro'yxatini beradi."],
+        ["Shart bilan", "§[x for x in range(20) if x % 2 == 0]§ faqat shartga mos keladiganlarni oladi."],
+        ["Lug'at va set", "Xuddi shunday §{k: v for ...}§ lug'at, §{x for ...}§ set yaratadi."],
+        ["Qachon ishlatiladi?", "Qisqa va tushunarli bo'lsa ishlating. Juda murakkab bo'lib ketsa, oddiy §for§ sikli o'qishga osonroq."]
+      ],
+      c: String.raw`kvadratlar = [x * x for x in range(1, 6)]
+print(kvadratlar)       # [1, 4, 9, 16, 25]
+
+juft = [x for x in range(20) if x % 2 == 0]
+print(juft)
+
+sozlar = ["olma", "nok", "uzum"]
+katta = [s.upper() for s in sozlar]
+print(katta)
+
+uzunlik = {s: len(s) for s in sozlar}
+print(uzunlik)`,
+      p: [
+        "1 dan 50 gacha 7 ga bo'linadigan sonlar ro'yxatini yarating.",
+        "So'zlar ro'yxatidan faqat 4 harfdan uzunlarini oling.",
+        "1 dan 5 gacha sonlarning kublaridan {son: kub} lug'ati yarating."
+      ],
+      w: [
+        "Oldingi kunlardagi 3 ta oddiy §for§ kodini comprehension ga aylantiring.",
+        "§\"a1b2c3\"§ matnidan raqamlarni ajratib, butun sonlar ro'yxatini yarating.",
+        "Ichma-ich ro'yxatni (§[[1, 2], [3, 4]]§) bitta tekis ro'yxatga aylantiring."
+      ]
+    },
+    /* 20 */ {
+      t: "Fayllar bilan ishlash", v: 70,
+      g: "Ma'lumotni faylga yozish va fayldan o'qishni o'rganish.",
+      th: [
+        ["open() va rejimlar", "§\"r\"§ o'qish, §\"w\"§ yozish (eskisini o'chiradi), §\"a\"§ oxiriga qo'shish. O'zbekcha harflar to'g'ri chiqishi uchun §encoding=\"utf-8\"§ yozing."],
+        ["with bloki", "§with open(...) as f:§ ish tugagach faylni o'zi yopadi. Har doim shu usulni ishlating."],
+        ["O'qish usullari", "§f.read()§ hammasini, §f.readline()§ bitta qatorni, §f.readlines()§ qatorlar ro'yxatini beradi. Faylni §for qator in f:§ bilan ham o'qish mumkin."],
+        ["Yozish", "§f.write(\"matn\\n\")§ yozadi. §\\n§ yangi qatorga o'tkazadi."]
+      ],
+      c: String.raw`with open("eslatma.txt", "w", encoding="utf-8") as f:
+    f.write("Birinchi qator\n")
+    f.write("Ikkinchi qator\n")
+
+with open("eslatma.txt", "r", encoding="utf-8") as f:
+    for qator in f:
+        print(qator.strip())
+
+with open("eslatma.txt", "a", encoding="utf-8") as f:
+    f.write("Uchinchi qator\n")`,
+      p: [
+        "Faylga 5 ta ism yozing, keyin o'qib chiqing.",
+        "Fayldagi qatorlar sonini sanang.",
+        "Fayl oxiriga yangi qator qo'shing."
+      ],
+      w: [
+        "Kundalik: foydalanuvchi matn kiritadi, u sana bilan birga faylga qo'shiladi.",
+        "Fayldagi eng uzun qatorni toping.",
+        "Fayldagi so'zlar sonini sanang."
+      ]
+    },
+    /* 21 */ {
+      t: "Xatolar bilan ishlash", v: 70,
+      g: "Dastur xatolikda to'xtab qolmasligi uchun xatolarni ushlashni o'rganish.",
+      th: [
+        ["Xato turlari", "§SyntaxError§ yozuv xatosi, §ValueError§ noto'g'ri qiymat, §ZeroDivisionError§ nolga bo'lish, §FileNotFoundError§ fayl yo'q, §TypeError§ tur mos emas, §IndexError§ indeks chegaradan tashqari."],
+        ["try / except", "Xato chiqishi mumkin bo'lgan kodni §try§ ga, xato chiqqanda bajariladigan kodni §except§ ga yozing."],
+        ["else va finally", "§else§ xato bo'lmasa ishlaydi. §finally§ xato bo'lsa ham, bo'lmasa ham ishlaydi."],
+        ["raise", "§raise ValueError(\"xabar\")§ xatoni o'zingiz chiqarasiz. Noto'g'ri ma'lumotni tekshirishda ishlatiladi."]
+      ],
+      c: String.raw`try:
+    son = int(input("Son: "))
+    print(10 / son)
+except ValueError:
+    print("Bu son emas")
+except ZeroDivisionError:
+    print("Nolga bo'lib bo'lmaydi")
+else:
+    print("Hammasi yaxshi")
+finally:
+    print("Dastur tugadi")
+
+def yosh_tekshir(yosh):
+    if yosh < 0:
+        raise ValueError("Yosh manfiy bo'lmaydi")
+    return yosh`,
+      p: [
+        "Son kiritishda xato bo'lsa, to'g'ri son kiritilguncha qayta so'rang.",
+        "Mavjud bo'lmagan faylni ochishga urinib, §FileNotFoundError§ ni ushlang.",
+        "Ro'yxat chegarasidan tashqariga chiqib, §IndexError§ ni ushlang."
+      ],
+      w: [
+        "7-kundagi kalkulyatorni xatolardan himoyalang.",
+        "Faylni xavfsiz o'qiydigan funksiya yozing: fayl yo'q bo'lsa bo'sh ro'yxat qaytarsin.",
+        "3-haftada o'rganganlaringizning qisqa konspektini yozing."
+      ]
+    },
+    /* 22 */ {
+      t: "Modullar: import, math, random", v: 60,
+      g: "Tayyor modullardan foydalanish va o'z modulingizni yaratish.",
+      th: [
+        ["Modul nima?", "Modul tayyor funksiyalar to'plami bo'lgan fayl. §import§ bilan ulanadi. Python bilan bir qancha foydali modullar birga keladi."],
+        ["Import usullari", "§import math§ keyin §math.sqrt(9)§. §from math import sqrt§ keyin §sqrt(9)§. §import numpy as np§ qisqa nom beradi."],
+        ["math va random", "§math§ matematik funksiyalar beradi (§sqrt§, §pi§, §ceil§, §floor§). §random§ tasodifiy sonlar va tanlov beradi (§randint§, §choice§, §shuffle§)."],
+        ["O'z modulingiz", "Har qanday §.py§ fayl modul bo'ladi. §matematika.py§ yozib, boshqa fayldan §import matematika§ qilsangiz bo'ladi."]
+      ],
+      c: String.raw`import math
+import random
+
+print(math.sqrt(49))
+print(math.pi)
+print(math.ceil(4.2), math.floor(4.8))
+
+print(random.randint(1, 10))
+print(random.choice(["tosh", "qaychi", "qog'oz"]))
+
+from random import shuffle
+kartalar = [1, 2, 3, 4, 5]
+shuffle(kartalar)
+print(kartalar)`,
+      p: [
+        "1 dan 6 gacha tasodifiy zar tashlang.",
+        "§math.sqrt§ bilan kvadrat ildiz hisoblang.",
+        "§matematika.py§ yarating, ichida 2 ta funksiya bo'lsin va uni boshqa fayldan import qiling."
+      ],
+      w: [
+        "Tosh-qaychi-qog'oz o'yini: kompyuterga qarshi o'ynang.",
+        "Tasodifiy parol generatori yozing (§random.choice§ bilan).",
+        "§random.sample§ bilan ro'yxatdan 3 ta tasodifiy elementni tanlang."
+      ]
+    },
+    /* 23 */ {
+      t: "OOP 1: sinf va obyekt", v: 70,
+      g: "Sinf va obyekt tushunchalarini bilib, birinchi sinfingizni yozish.",
+      th: [
+        ["Sinf va obyekt", "Sinf bu qolip (masalan “Mushuk”), obyekt esa shu qolipdan yasalgan aniq narsa (masalan sizning mushugingiz “Momiq”)."],
+        ["Yaratish", "§class Mushuk:§ bilan sinf yoziladi. §m = Mushuk()§ bilan obyekt yaratiladi."],
+        ["Atribut va metod", "Atribut obyektning xususiyati (§m.ism§), metod esa uning amali (§m.miyovla()§). Metodning birinchi parametri doim §self§."],
+        ["Nega kerak?", "Bog'liq ma'lumot va amallarni bir joyga yig'ish katta dasturlarni tartibli qiladi."]
+      ],
+      c: String.raw`class Mushuk:
+    def miyovla(self):
+        print("Miyov!")
+
+m = Mushuk()
+m.ism = "Momiq"
+m.yosh = 2
+print(m.ism, m.yosh)
+m.miyovla()`,
+      p: [
+        "§Kitob§ sinfini yarating va obyektga nom hamda muallif atributlarini bering.",
+        "Sinfga kitob haqida ma'lumot chiqaruvchi metod qo'shing.",
+        "3 ta alohida kitob obyektini yarating."
+      ],
+      w: [
+        "§Mashina§ sinfi yozing (marka, rang) va unga §yur()§ metodi qo'shing.",
+        "§Telefon§ sinfi yozing.",
+        "Sinf va obyekt farqini o'z so'zlaringiz bilan daftarga yozing."
+      ]
+    },
+    /* 24 */ {
+      t: "OOP 2: __init__, metodlar va atributlar", v: 80,
+      g: "Obyektni yaratilganda tayyorlash va ma'lumot bilan ishlovchi metodlar yozish.",
+      th: [
+        ["__init__", "Obyekt yaratilganda avtomatik ishlaydigan maxsus metod (konstruktor). Boshlang'ich qiymatlarni shu yerda beramiz."],
+        ["self", "§self.ism = ism§ qiymatni aynan shu obyektga saqlaydi. Har obyektning o'z qiymatlari bo'ladi."],
+        ["__str__", "§print(obyekt)§ qilinganda qanday matn chiqishini belgilaydi."],
+        ["Sinf atributi", "Sinfning o'zida yoziladigan atribut barcha obyektlar uchun umumiy."]
+      ],
+      c: String.raw`class Talaba:
+    kurs_soni = 4          # barcha talabalar uchun umumiy
+
+    def __init__(self, ism, yosh):
+        self.ism = ism
+        self.yosh = yosh
+        self.baholar = []
+
+    def baho_qosh(self, b):
+        self.baholar.append(b)
+
+    def ortacha(self):
+        return sum(self.baholar) / len(self.baholar)
+
+    def __str__(self):
+        return f"{self.ism} ({self.yosh} yosh)"
+
+t = Talaba("Aziza", 19)
+t.baho_qosh(5)
+t.baho_qosh(4)
+print(t, t.ortacha())`,
+      p: [
+        "§Talaba§ sinfidan 3 ta obyekt yarating va o'rtacha baholarni solishtiring.",
+        "Bank hisobi sinfini yozing: balans, pul qo'shish va yechish metodlari bilan.",
+        "Balansdan ko'p pul yechishga urinilsa, xabar chiqaring."
+      ],
+      w: [
+        "§Hayvon§ sinfi yozing (nom, yosh, ovoz berish metodi).",
+        "§Kitob§ sinfi yozing va “berilgan” holatini ham saqlang.",
+        "§Tortburchak§ sinfi yozing: yuza va perimetr metodlari bilan."
+      ]
+    },
+    /* 25 */ {
+      t: "OOP 3: meros", v: 70,
+      g: "Mavjud sinf asosida yangi sinf yaratishni o'rganish.",
+      th: [
+        ["Meros nima?", "Bola sinf ota sinfning atribut va metodlarini oladi: §class It(Hayvon):§. Takroriy kodni yozmaslikka yordam beradi."],
+        ["super()", "§super().__init__(...)§ ota sinfning konstruktorini chaqiradi."],
+        ["Qayta yozish (override)", "Bola sinfda ota sinfdagi metod nomi bilan yangi metod yozsangiz, bola sinf obyekti uchun o'sha ishlaydi."],
+        ["isinstance()", "§isinstance(obj, Sinf)§ obyekt shu sinfdan ekanini tekshiradi."]
+      ],
+      c: String.raw`class Hayvon:
+    def __init__(self, ism):
+        self.ism = ism
+
+    def ovoz(self):
+        print("...")
+
+class It(Hayvon):
+    def ovoz(self):
+        print(f"{self.ism}: Hov-hov!")
+
+class Mushuk(Hayvon):
+    def __init__(self, ism, rang):
+        super().__init__(ism)
+        self.rang = rang
+
+    def ovoz(self):
+        print(f"{self.ism}: Miyov!")
+
+for h in [It("Bobik"), Mushuk("Momiq", "oq")]:
+    h.ovoz()`,
+      p: [
+        "§Shakl§ sinfi va undan §Doira§, §Tortburchak§ sinflarini meros qilib, §yuza()§ metodini yozing.",
+        "§isinstance§ bilan obyekt turini tekshiring.",
+        "§super()§ qatorini olib tashlab, nima o'zgarishini ko'ring."
+      ],
+      w: [
+        "§Transport§ sinfi va undan §Mashina§, §Velosiped§ sinflarini yarating.",
+        "§Xodim§ sinfi va undan §Menejer§ sinfini yarating (bonusli maosh bilan).",
+        "O'zingiz uchun bitta meros zanjirini o'ylab toping va daftarga chizing."
+      ]
+    },
+    /* 26 */ {
+      t: "OOP 4: yashirin atributlar va maxsus metodlar", v: 80,
+      g: "Ma'lumotni himoyalash va obyektlarga +, ==, len() kabi amallarni o'rgatish.",
+      th: [
+        ["Inkapsulyatsiya", "Atribut nomini §__§ bilan boshlasangiz, uni tashqaridan to'g'ridan-to'g'ri o'zgartirish qiyinlashadi. Qiymat faqat metodlar orqali o'zgartiriladi."],
+        ["@property", "Metodni atribut kabi o'qish imkonini beradi: §hisob.balans§ (qavssiz)."],
+        ["Maxsus metodlar", "§__add__§ qo'shish (+), §__eq__§ tenglik (==), §__len__§ uzunlik (len), §__str__§ matnga aylantirish uchun."],
+        ["Polimorfizm", "Turli sinflarda bir xil nomli metod bo'lsa, ularni bir xil usulda chaqirish mumkin: §h.ovoz()§."]
+      ],
+      c: String.raw`class Hisob:
+    def __init__(self, balans):
+        self.__balans = balans      # yashirin
+
+    @property
+    def balans(self):
+        return self.__balans
+
+    def qosh(self, summa):
+        if summa > 0:
+            self.__balans += summa
+
+h = Hisob(100)
+h.qosh(50)
+print(h.balans)     # 150
+
+class Vektor:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+    def __add__(self, other):
+        return Vektor(self.x + other.x, self.y + other.y)
+
+    def __str__(self):
+        return f"({self.x}, {self.y})"
+
+print(Vektor(1, 2) + Vektor(3, 4))`,
+      p: [
+        "Bank hisobida balansni faqat metodlar orqali o'zgartiring.",
+        "§__eq__§ bilan ikki obyekt tengligini aniqlang.",
+        "§__len__§ bilan §Kutubxona§ sinfidagi kitoblar sonini qaytaring."
+      ],
+      w: [
+        "§Kasr§ sinfi yozing (surat, maxraj): qo'shish va chiroyli chop etish bilan.",
+        "§Foydalanuvchi§ sinfi yozing: parol yashirin bo'lsin.",
+        "Turli sinflarning bir xil nomli metodini bitta sikldan chaqiring (polimorfizm)."
+      ]
+    },
+    /* 27 */ {
+      t: "JSON va sana-vaqt", v: 70,
+      g: "Ma'lumotni JSON formatida saqlash va sana bilan hisob-kitob qilish.",
+      th: [
+        ["JSON nima?", "JSON ma'lumotni matn ko'rinishida saqlash formati. U Python lug'ati va ro'yxatiga juda o'xshaydi va dasturlar o'rtasida almashishda keng ishlatiladi."],
+        ["json moduli", "§json.dump(malumot, f)§ faylga yozadi, §json.load(f)§ fayldan o'qiydi. O'zbekcha harflar uchun §ensure_ascii=False§ yozing."],
+        ["datetime", "§datetime.now()§ hozirgi vaqtni beradi. §strftime(\"%d.%m.%Y\")§ chiroyli matnga aylantiradi."],
+        ["timedelta", "§timedelta(days=7)§ vaqt oralig'i. Sanaga qo'shib yoki ayirib hisoblash mumkin."]
+      ],
+      c: String.raw`import json
+from datetime import datetime, timedelta
+
+malumot = {"ism": "Ali", "kurslar": ["Python", "SQL"]}
+with open("data.json", "w", encoding="utf-8") as f:
+    json.dump(malumot, f, ensure_ascii=False, indent=2)
+
+with open("data.json", "r", encoding="utf-8") as f:
+    yuklangan = json.load(f)
+print(yuklangan["kurslar"])
+
+hozir = datetime.now()
+print(hozir.strftime("%d.%m.%Y %H:%M"))
+print(hozir + timedelta(days=7))`,
+      p: [
+        "Lug'atni JSON faylga saqlang va qayta o'qing.",
+        "Bugundan 100 kun keyingi sanani toping.",
+        "Tug'ilgan kuningizgacha necha kun qolganini hisoblang."
+      ],
+      w: [
+        "Kontaktlar kitobi yozing (ism: raqam). Ma'lumot JSON faylda saqlansin.",
+        "Vazifalar ro'yxati (to-do) yozing. Vazifalar JSON faylda saqlansin.",
+        "Tug'ilgan sanadan hozirgi yoshingizni hisoblang."
+      ]
+    },
+    /* 28 */ {
+      t: "pip, virtual muhit va kutubxonalar", v: 70,
+      g: "Tashqi kutubxonalarni o'rnatish va loyihalarni bir-biridan ajratib saqlashni o'rganish.",
+      th: [
+        ["pip", "§pip install nom§ kutubxonani o'rnatadi. §pip list§ o'rnatilganlarni ko'rsatadi. Bu buyruqlar Python kodiga emas, terminalga yoziladi."],
+        ["Virtual muhit", "§python -m venv venv§ loyiha uchun alohida kutubxonalar muhitini yaratadi. Shunda loyihalar bir-biriga xalaqit bermaydi."],
+        ["requirements.txt", "§pip freeze > requirements.txt§ loyihadagi kutubxonalar ro'yxatini saqlaydi. Boshqa kompyuterda §pip install -r requirements.txt§ bilan tiklanadi."],
+        ["Mashhur kutubxonalar", "§requests§ veb-so'rovlar, §pandas§ jadval ma'lumotlari, §matplotlib§ grafiklar, §flask§ veb-sayt, §pygame§ o'yinlar uchun."]
+      ],
+      c: String.raw`# Terminalda:
+#   python -m venv venv
+#   venv\Scripts\activate          (Windows)
+#   source venv/bin/activate       (Mac va Linux)
+#   pip install requests
+#   pip freeze > requirements.txt
+
+import requests
+
+javob = requests.get("https://api.github.com")
+print(javob.status_code)
+print(javob.headers["content-type"])`,
+      p: [
+        "Virtual muhit yarating, faollashtiring va unga §requests§ o'rnating.",
+        "§requests§ bilan ochiq API'dan ma'lumot oling (masalan §https://api.github.com§).",
+        "§pip list§ bilan o'rnatilgan kutubxonalarni ko'ring."
+      ],
+      w: [
+        "§matplotlib§ o'rnating va oddiy chiziqli grafik chizing.",
+        "O'zingizga qiziq kutubxonaning (pandas, flask, pygame) hujjatini 15 daqiqa o'qing va nima qila olishini yozing.",
+        "§requirements.txt§ faylini yarating."
+      ]
+    },
+    /* 29 */ {
+      t: "Algoritmlar: qidiruv va saralash", v: 80,
+      g: "Ma'lumotni qidirish va saralashning asosiy usullarini va ularning tezligini tushunish.",
+      th: [
+        ["Chiziqli qidiruv", "Elementlarni boshidan oxirigacha birma-bir tekshirish. Oddiy, lekin ro'yxat uzun bo'lsa sekin."],
+        ["Ikkilik qidiruv", "Faqat saralangan ro'yxatda ishlaydi. Har safar o'rtadagi elementni tekshirib, qidiruv oralig'ini yarmiga qisqartiradi. Juda tez."],
+        ["Pufakchali saralash", "Qo'shni elementlarni solishtirib, kattasini o'ngga o'tkazadi. Tushunish oson, lekin sekin. Amalda §sorted()§ ishlatiladi."],
+        ["Tezlik tushunchasi", "Algoritm ma'lumot ko'payganda qanchalik sekinlashishi muhim. Chiziqli qidiruv n ta qadam, ikkilik qidiruv taxminan log n qadam talab qiladi."]
+      ],
+      c: String.raw`def ikkilik_qidiruv(royxat, nishon):
+    chap, ong = 0, len(royxat) - 1
+    while chap <= ong:
+        o_rta = (chap + ong) // 2
+        if royxat[o_rta] == nishon:
+            return o_rta
+        elif royxat[o_rta] < nishon:
+            chap = o_rta + 1
+        else:
+            ong = o_rta - 1
+    return -1
+
+def pufakcha(r):
+    n = len(r)
+    for i in range(n):
+        for j in range(n - i - 1):
+            if r[j] > r[j + 1]:
+                r[j], r[j + 1] = r[j + 1], r[j]
+    return r
+
+print(pufakcha([5, 2, 9, 1]))
+print(ikkilik_qidiruv([1, 3, 5, 7, 9], 7))`,
+      p: [
+        "Pufakchali saralashni kichik ro'yxatda daftarda qadamma-qadam kuzating.",
+        "Chiziqli qidiruvni funksiya qilib yozing.",
+        "Ikkilik qidiruv nima uchun tez ekanini o'z so'zlaringiz bilan tushuntiring."
+      ],
+      w: [
+        "Tanlab saralash (selection sort) algoritmini yozing.",
+        "Ikkilik qidiruvda element necha qadamda topilganini sanang.",
+        "Ro'yxatdagi eng ko'p uchraydigan elementni toping."
+      ]
+    },
+    /* 30 */ {
+      t: "Yakuniy loyiha", v: 120,
+      g: "O'rganganlaringizni birlashtirib, o'zingizning birinchi to'liq dasturingizni yozish.",
+      th: [
+        ["Loyiha tanlang", "Vazifalar ro'yxati, kontaktlar kitobi, xarajatlar hisobi, viktorina yoki son topish o'yini. Qaysi biri sizga qiziq bo'lsa, shuni tanlang."],
+        ["Rejalang", "Dastur nima qilishi kerak, qaysi funksiyalar kerak, ma'lumot qayerda saqlanadi (fayl yoki JSON)? Buni qog'ozga yozib oling."],
+        ["Qadam-baqadam yozing", "Avval eng oddiy ishlaydigan variantni yozing, keyin imkoniyat qo'shing. Har qadamdan keyin ishga tushirib tekshiring."],
+        ["README yozing", "Loyiha nima qiladi va qanday ishga tushiriladi, shuni 5-6 qatorda yozing. Bu odat keyinchalik juda kerak bo'ladi."]
+      ],
+      c: String.raw`import json
+
+FAYL = "vazifalar.json"
+
+def yuklash():
+    try:
+        with open(FAYL, "r", encoding="utf-8") as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+def saqlash(vazifalar):
+    with open(FAYL, "w", encoding="utf-8") as f:
+        json.dump(vazifalar, f, ensure_ascii=False, indent=2)
+
+def asosiy():
+    vazifalar = yuklash()
+    while True:
+        print("\n1. Ko'rish  2. Qo'shish  3. Chiqish")
+        tanlov = input("Tanlang: ")
+        if tanlov == "1":
+            for i, v in enumerate(vazifalar, 1):
+                print(i, v)
+        elif tanlov == "2":
+            vazifalar.append(input("Vazifa: "))
+            saqlash(vazifalar)
+        elif tanlov == "3":
+            break
+
+asosiy()`,
+      p: [
+        "Yuqoridagi vazifalar ro'yxati dasturini o'zingiz yozib ishlatib ko'ring.",
+        "Unga vazifani o'chirish imkonini qo'shing.",
+        "Vazifani “bajarildi” deb belgilash imkonini qo'shing."
+      ],
+      w: [
+        "Loyihaga o'zingiz o'ylab topgan yangi imkoniyat qo'shing.",
+        "Loyiha uchun README yozing: nima qiladi va qanday ishga tushiriladi.",
+        "Keyingi maqsadingizni belgilang (veb, ma'lumotlar tahlili, bot, o'yin) va 30 kunlik yangi reja tuzing."
+      ]
+    }
+  ];
+
+  /* ---------- Sana yordamchilari ---------- */
+  var WD = ["Yakshanba", "Dushanba", "Seshanba", "Chorshanba", "Payshanba", "Juma", "Shanba"];
+  var MO = ["yanvar", "fevral", "mart", "aprel", "may", "iyun", "iyul", "avgust", "sentabr", "oktabr", "noyabr", "dekabr"];
+  function pad(n) { return (n < 10 ? "0" : "") + n; }
+  function iso(d) { return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()); }
+  function parse(s) { var p = String(s).split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+  function short(d) { return d.getDate() + "-" + MO[d.getMonth()]; }
+  var TODAY = iso(new Date());
+  var N = DAYS.length;
+
+  /* ---------- Holat va saqlash ---------- */
+  var KEY = "python-daftari-v1";
+  function fresh() { return { start: TODAY, done: {}, tasks: {} }; }
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) {
+        var o = JSON.parse(raw);
+        if (o && typeof o === "object") {
+          return {
+            start: /^\d{4}-\d{2}-\d{2}$/.test(o.start) ? o.start : TODAY,
+            done: o.done && typeof o.done === "object" ? o.done : {},
+            tasks: o.tasks && typeof o.tasks === "object" ? o.tasks : {}
+          };
+        }
+      }
+    } catch (e) {}
+    return fresh();
+  }
+  var S = load();
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  save();
+
+  function dayDate(n) { return addDays(parse(S.start), n - 1); }
+  function doneCount() { var c = 0; for (var i = 1; i <= N; i++) if (S.done[i]) c++; return c; }
+  function nextDay() { for (var i = 1; i <= N; i++) if (!S.done[i]) return i; return 0; }
+  function taskStat(n) {
+    var d = DAYS[n - 1], c = 0, i;
+    for (i = 0; i < d.p.length; i++) if (S.tasks[n + ":p" + i]) c++;
+    for (i = 0; i < d.w.length; i++) if (S.tasks[n + ":w" + i]) c++;
+    return [c, d.p.length + d.w.length];
+  }
+
+  /* ---------- DOM yordamchilari ---------- */
+  function h(tag, props) {
+    var e = document.createElement(tag), k;
+    props = props || {};
+    for (k in props) {
+      var v = props[k];
+      if (v == null || v === false) continue;
+      if (k === "class") e.className = v;
+      else if (k.slice(0, 2) === "on") e.addEventListener(k.slice(2), v);
+      else if (v === true) e.setAttribute(k, "");
+      else e.setAttribute(k, v);
+    }
+    for (var i = 2; i < arguments.length; i++) add(e, arguments[i]);
+    return e;
+  }
+  function add(e, c) {
+    if (c == null || c === false) return;
+    if (Array.isArray(c)) { c.forEach(function (x) { add(e, x); }); return; }
+    e.append(c instanceof Node ? c : document.createTextNode(String(c)));
+  }
+  var ICONS = {
+    check: '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8.5l3.2 3.2L13 4.8"/></svg>',
+    left: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 3.5L5.5 9 11 14.5"/></svg>',
+    right: '<svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3.5L12.5 9 7 14.5"/></svg>'
+  };
+  function icon(name) { var s = document.createElement("span"); s.style.display = "inline-grid"; s.innerHTML = ICONS[name]; return s; }
+
+  function rich(str) {
+    var parts = str.split("§"), out = [];
+    parts.forEach(function (p, i) { if (!p) return; out.push(i % 2 ? h("code", { class: "i" }, p) : p); });
+    return out;
+  }
+
+  var TOK = /(#[^\n]*)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*')|\b(def|class|return|if|elif|else|while|for|in|not|and|or|import|from|as|with|try|except|finally|raise|break|continue|True|False|None|lambda|pass|is)\b|\b(\d+(?:\.\d+)?)\b|\b(print|input|int|float|str|len|range|sum|max|min|sorted|list|set|dict|type|open|isinstance|super|round|filter|map|enumerate|bool)\b/g;
+  function highlight(code) {
+    var f = document.createDocumentFragment(), last = 0, m;
+    TOK.lastIndex = 0;
+    while ((m = TOK.exec(code))) {
+      if (m.index > last) f.append(code.slice(last, m.index));
+      var cls = m[1] ? "c" : m[2] ? "s" : m[3] ? "k" : m[4] ? "n" : "f";
+      var sp = document.createElement("span");
+      sp.className = "t-" + cls;
+      sp.textContent = m[0];
+      f.append(sp);
+      last = TOK.lastIndex;
+    }
+    f.append(code.slice(last));
+    return f;
+  }
+
+  function flash(btn, text) {
+    var old = btn.textContent;
+    btn.textContent = text;
+    setTimeout(function () { btn.textContent = old; }, 1800);
+  }
+  function selectNode(node) {
+    try {
+      var r = document.createRange(); r.selectNodeContents(node);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+    } catch (e) {}
+  }
+  function copyText(text, btn, node) {
+    var p;
+    try { p = navigator.clipboard.writeText(text); } catch (e) { p = Promise.reject(e); }
+    p.then(function () { flash(btn, "Nusxalandi"); }, function () {
+      if (node) { selectNode(node); if (node.select) node.select(); }
+      flash(btn, "Belgilandi, nusxalang");
+    });
+  }
+
+  /* ---------- Ko'rinish ---------- */
+  var app = document.getElementById("app");
+  var pill = document.getElementById("pill");
+  var view = 0;
+  var confirmReset = false, backupOpen = false, backupMsg = "";
+
+  function go(n) { view = n; confirmReset = false; render(); window.scrollTo(0, 0); }
+  function rerender() { var y = window.scrollY; render(); window.scrollTo(0, y); }
+  function toggleDay(n) { if (S.done[n]) delete S.done[n]; else S.done[n] = true; save(); rerender(); }
+
+  function render() {
+    pill.textContent = doneCount() + "/" + N;
+    app.replaceChildren(view === 0 ? home() : dayView(view), footer());
+  }
+
+  /* bosh sahifa */
+  function home() {
+    var dc = doneCount(), nx = nextDay(), i;
+    var cells = [];
+    for (i = 1; i <= N; i++) (function (n) {
+      var cls = "cell" + (S.done[n] ? " done" : "") + (n === nx ? " next" : "") + (iso(dayDate(n)) === TODAY ? " today" : "");
+      cells.push(h("button", { class: cls, type: "button", "aria-label": n + "-kun" + (S.done[n] ? ", belgilangan" : ""), onclick: function () { go(n); } }, String(n)));
+    })(i);
+
+    var cta;
+    if (nx === 0) cta = h("p", { class: "finished" }, "30 kun tugadi. Tabriklaymiz, Python asoslarini tugatdingiz!");
+    else cta = h("button", { class: "btn", type: "button", onclick: function () { go(nx); } }, dc === 0 ? "1-kunni boshlash" : "Davom etish: " + nx + "-kun");
+
+    var dateInput = h("input", {
+      type: "date", id: "start-date", value: S.start,
+      onchange: function (e) { if (/^\d{4}-\d{2}-\d{2}$/.test(e.target.value)) { S.start = e.target.value; save(); rerender(); } }
+    });
+
+    var weeks = WEEKS.map(function (w) {
+      var wd = 0, n;
+      for (n = w.a; n <= w.b; n++) if (S.done[n]) wd++;
+      var rows = [];
+      for (n = w.a; n <= w.b; n++) (function (n) {
+        var d = DAYS[n - 1], dt = dayDate(n), ts = taskStat(n), done = !!S.done[n];
+        rows.push(h("li", { class: "row" + (done ? " done" : "") },
+          h("button", { class: "tick", type: "button", "aria-pressed": done ? "true" : "false", "aria-label": n + "-kunni belgilash", onclick: function () { toggleDay(n); } },
+            h("span", { class: "box" }, icon("check"))),
+          h("button", { class: "open", type: "button", onclick: function () { go(n); } },
+            h("span", { class: "when" }, h("span", null, n + "-kun · " + WD[dt.getDay()] + ", " + short(dt)), iso(dt) === TODAY && h("span", { class: "today-badge" }, "Bugun")),
+            h("span", { class: "ttl" }, d.t),
+            h("span", { class: "sub" }, "Vazifalar " + ts[0] + "/" + ts[1] + " · taxminan " + d.v + " daqiqa"))));
+      })(n);
+      var wi = WEEKS.indexOf(w) + 1;
+      return h("section", { class: "week" },
+        h("div", { class: "week-head" },
+          h("div", { style: "min-width:0" },
+            h("div", { class: "week-meta" }, wi + "-hafta · " + short(dayDate(w.a)) + (w.b > w.a ? " – " + short(dayDate(w.b)) : "")),
+            h("h3", { class: "week-name" }, w.t)),
+          h("span", { class: "week-count" }, wd + "/" + (w.b - w.a + 1))),
+        h("ul", { class: "rows" }, rows));
+    });
+
+    return h("div", null,
+      h("section", { class: "hero" },
+        h("h1", null, h("span", { class: "mk" }, "Python"), " 30 kunda"),
+        h("p", { class: "lead" }, "Har kuni bitta dars: nazariya, kod namunasi, amaliy va uyga vazifa. Kunni tushunib bo'lgach, o'zingiz belgilab boring."),
+        h("div", { class: "board" },
+          h("div", { class: "board-head" },
+            h("div", { class: "count" }, String(dc), h("small", null, "/ " + N + " kun")),
+            h("div", { class: "pct" }, Math.round(dc / N * 100) + "% bajarildi")),
+          h("div", { class: "cells", role: "group", "aria-label": "30 kunlik progress" }, cells),
+          h("div", { class: "legend" },
+            h("span", null, h("i", { class: "d" }), "Belgilangan"),
+            h("span", null, h("i", { class: "n" }), "Keyingi dars"),
+            h("span", null, h("i"), "Hali yo'q")),
+          h("div", { class: "cta-row" }, cta,
+            h("label", { class: "datebox", for: "start-date" }, "Birinchi dars sanasi", dateInput)))),
+      h("h2", { class: "sched-title" }, "Dars jadvali"),
+      h("p", { class: "sched-note" }, "Doira bilan kunni belgilang, nomiga bossangiz darsni ochasiz. Sanalar birinchi dars sanasidan kelib chiqadi."),
+      weeks);
+  }
+
+  /* kun sahifasi */
+  function taskList(n, kind, arr) {
+    var items = arr.map(function (txt, i) {
+      var key = n + ":" + kind + i;
+      var span = h("span", null, rich(txt));
+      var label = h("label", { class: "task" + (S.tasks[key] ? " on" : "") });
+      var cb = h("input", {
+        type: "checkbox", id: "t-" + kind + "-" + i, checked: S.tasks[key] ? true : null,
+        onchange: function (e) {
+          if (e.target.checked) S.tasks[key] = true; else delete S.tasks[key];
+          label.classList.toggle("on", e.target.checked);
+          save();
+          var c = document.getElementById("tcount");
+          if (c) { var ts = taskStat(n); c.textContent = ts[0] + "/" + ts[1]; }
+        }
+      });
+      label.append(cb, span);
+      return h("li", null, label);
+    });
+    return h("ul", { class: "tasks" }, items);
+  }
+
+  function dayView(n) {
+    var d = DAYS[n - 1], dt = dayDate(n), done = !!S.done[n], ts = taskStat(n);
+    var wi = 0, k;
+    for (k = 0; k < WEEKS.length; k++) if (n >= WEEKS[k].a && n <= WEEKS[k].b) wi = k + 1;
+    var pre = h("pre", null, h("code", null, highlight(d.c)));
+    var copyBtn = h("button", { class: "copy", type: "button", onclick: function () { copyText(d.c, copyBtn, pre); } }, "Nusxalash");
+
+    return h("div", null,
+      h("div", { class: "bar" },
+        h("button", { class: "back", type: "button", onclick: function () { go(0); } }, icon("left"), "Jadval"),
+        h("div", { class: "pn" },
+          h("button", { class: "sq", type: "button", "aria-label": "Oldingi kun", disabled: n === 1 ? true : null, onclick: function () { go(n - 1); } }, icon("left")),
+          h("button", { class: "sq", type: "button", "aria-label": "Keyingi kun", disabled: n === N ? true : null, onclick: function () { go(n + 1); } }, icon("right")))),
+      h("div", { class: "eyebrow" }, n + "-kun · " + wi + "-hafta · " + WD[dt.getDay()] + ", " + short(dt)),
+      h("h2", { class: "day-title" }, d.t),
+      h("div", { class: "chips" },
+        h("span", { class: "chip" }, "Taxminan " + d.v + " daqiqa"),
+        done && h("span", { class: "chip ok" }, "Belgilangan")),
+      h("div", { class: "goal" }, h("b", null, "Bugungi maqsad"), d.g),
+
+      h("section", { class: "sec" },
+        h("h3", { class: "sec-h" }, "Nazariya"),
+        d.th.map(function (t) { return h("div", { class: "concept" }, h("h4", null, t[0]), h("p", null, rich(t[1]))); })),
+
+      h("section", { class: "sec" },
+        h("h3", { class: "sec-h" }, "Kod namunasi"),
+        h("figure", { class: "code" }, h("div", { class: "code-bar" }, h("span", null, "Python"), copyBtn), pre)),
+
+      h("section", { class: "sec" },
+        h("h3", { class: "sec-h" }, "Amaliy vazifalar"),
+        taskList(n, "p", d.p)),
+
+      h("section", { class: "sec" },
+        h("h3", { class: "sec-h" }, "Uyga vazifa"),
+        taskList(n, "w", d.w)),
+
+      h("div", { class: "sec-h", style: "margin:22px 0 0" }, h("span", null, "Bajarilgan vazifalar"), h("span", { class: "cnt", id: "tcount" }, ts[0] + "/" + ts[1])),
+
+      h("section", { class: "finish" + (done ? " done" : "") },
+        h("p", null, done ? "Bu kun belgilangan. Zarur bo'lsa belgini olib tashlashingiz mumkin." : "Nazariyani tushundingizmi va vazifalarni bajardingizmi? Unda kunni belgilang."),
+        h("button", { class: "btn", type: "button", onclick: function () { toggleDay(n); } }, done ? "Belgini olib tashlash" : [icon("check"), "Bu kunni tushundim"])),
+
+      h("div", { class: "nav2" },
+        n > 1 ? h("button", { class: "btn ghost small", type: "button", onclick: function () { go(n - 1); } }, (n - 1) + "-kun") : h("span"),
+        n < N ? h("button", { class: "btn ghost small", type: "button", onclick: function () { go(n + 1); } }, (n + 1) + "-kun") : h("span")));
+  }
+
+  /* pastki qism: zaxira va tozalash */
+  function backupJSON() { return JSON.stringify({ v: 1, start: S.start, done: S.done, tasks: S.tasks }); }
+  function restore(text) {
+    try {
+      var o = JSON.parse(text);
+      if (!o || typeof o !== "object" || typeof o.done !== "object" || o.done === null) throw new Error("x");
+      var done = {}, tasks = {}, k;
+      for (k in o.done) if (/^\d+$/.test(k) && +k >= 1 && +k <= N && o.done[k]) done[k] = true;
+      if (o.tasks && typeof o.tasks === "object") for (k in o.tasks) if (/^\d+:[pw]\d+$/.test(k) && o.tasks[k]) tasks[k] = true;
+      S = { start: /^\d{4}-\d{2}-\d{2}$/.test(o.start) ? o.start : S.start, done: done, tasks: tasks };
+      save(); backupMsg = "Belgilar tiklandi."; rerender();
+    } catch (e) { backupMsg = "Matn noto'g'ri. Zaxira matnini to'liq nusxalab qo'ying."; rerender(); }
+  }
+
+  function footer() {
+    var ta = h("textarea", { id: "backup", rows: 3, "aria-label": "Zaxira matni" });
+    ta.value = backupJSON();
+    var cp = h("button", { class: "btn ghost small", type: "button", onclick: function () { copyText(ta.value, cp, ta); } }, "Nusxalash");
+    var rs = h("button", { class: "btn ghost small", type: "button", onclick: function () { restore(ta.value); } }, "Shu matndan tiklash");
+    var det = h("details", { ontoggle: function (e) { backupOpen = e.target.open; } },
+      h("summary", null, "Belgilarni zaxiralash"),
+      h("p", { style: "margin-top:8px" }, "Belgilar shu brauzerda saqlanadi. Brauzer ma'lumotlarini tozalasangiz yoki boshqa qurilmadan kirsangiz yo'qolishi mumkin. Pastdagi matnni biror joyga saqlab qo'ying va kerak bo'lganda shu yerga qo'yib tiklang."),
+      ta, h("div", { class: "acts" }, cp, rs, backupMsg && h("span", { class: "msg", role: "status" }, backupMsg)));
+    if (backupOpen) det.open = true;
+
+    var reset = confirmReset
+      ? h("div", { class: "reset-row" },
+          h("span", null, "Hamma belgilar o'chadi. Davom etasizmi?"),
+          h("button", { class: "btn small", type: "button", onclick: function () { S = fresh(); save(); confirmReset = false; backupMsg = ""; view = 0; render(); window.scrollTo(0, 0); } }, "Ha, tozalash"),
+          h("button", { class: "btn ghost small", type: "button", onclick: function () { confirmReset = false; rerender(); } }, "Yo'q"))
+      : h("div", { class: "reset-row" }, h("button", { class: "btn ghost small", type: "button", onclick: function () { confirmReset = true; rerender(); } }, "Hamma belgilarni tozalash"));
+
+    return h("footer", { class: "foot" }, det, reset);
+  }
+
+  document.getElementById("brand").addEventListener("click", function () { go(0); });
+  render();
+})();
+</script>
+
+</body>
+</html>
